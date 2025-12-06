@@ -104,7 +104,7 @@ public abstract class AbstractInterfaceView<I : InterfacesInventory, T : Interfa
     public var isProcessingClick: Boolean = false
 
     /** The current parent of this view. */
-    private var parent: InterfaceView? = birthParent
+    private var parent: InterfaceView? = if (builder.parent != null) builder.parent else birthParent
         set(value) {
             val oldValue = field
             field = value

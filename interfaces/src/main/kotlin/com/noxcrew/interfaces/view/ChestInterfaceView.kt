@@ -19,8 +19,7 @@ public class ChestInterfaceView internal constructor(
     player,
     backing,
     parent,
-),
-    InventoryHolder {
+), InventoryHolder {
 
     private val titleState = TitleState()
 

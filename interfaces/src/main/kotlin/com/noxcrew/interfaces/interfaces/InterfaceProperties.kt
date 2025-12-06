@@ -6,6 +6,7 @@ import com.noxcrew.interfaces.exception.StandardInterfacesExceptionHandler
 import com.noxcrew.interfaces.pane.Pane
 import com.noxcrew.interfaces.transform.BlockingMode
 import com.noxcrew.interfaces.transform.RefreshMode
+import com.noxcrew.interfaces.view.InterfaceView
 import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.ItemStack
@@ -34,6 +35,9 @@ public open class InterfaceProperties<P : Pane> {
 
     /** Enables debug logs for time spent on various actions. */
     public var debugRenderingTime: Boolean = false
+
+    /** If set, this overrides the parent variable in [InterfaceView]. */
+    public var parent: InterfaceView? = null
 
     // --- CACHING / EFFICIENCY ---
     /** Whether to redraw the title when re-opening a menu. */
