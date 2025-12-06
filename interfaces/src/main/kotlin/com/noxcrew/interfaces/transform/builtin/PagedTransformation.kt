@@ -3,6 +3,7 @@ package com.noxcrew.interfaces.transform.builtin
 import com.noxcrew.interfaces.drawable.Drawable
 import com.noxcrew.interfaces.element.StaticElement
 import com.noxcrew.interfaces.grid.GridPoint
+import com.noxcrew.interfaces.grid.GridPositionGenerator
 import com.noxcrew.interfaces.pane.Pane
 import com.noxcrew.interfaces.properties.DelegateTrigger
 import com.noxcrew.interfaces.properties.InterfaceProperty
@@ -46,23 +47,35 @@ public abstract class PagedTransformation<P : Pane>(
 
     /** Places the given [button] in [pane]. */
     protected open fun applyButton(pane: Pane, button: PaginationButton) {
-        val (point, drawable, increments) = button
-
-        pane[point] = StaticElement(drawable) { (player, _, click) ->
+        val (points, drawable, increments) = button
+        val element = StaticElement(drawable) { (player, _, click) ->
             increments[click]?.let { increment -> page += increment }
             button.clickHandler(player)
         }
+
+        for (point in points) pane[point] = element
     }
 }
 
 /** A button used by a [PagedTransformation]. */
 public data class PaginationButton(
-    /** The position of this button. */
-    public val position: GridPoint,
+    /** The positions of this button. */
+    public val positions: GridPositionGenerator,
     /** The drawable to use for this button. */
     public val drawable: Drawable,
     /** The increments to apply to the current page number based on the incoming click type. */
     public val increments: Map<ClickType, Int>,
     /** An optional additional click handler to run when this button is used. */
     public val clickHandler: (Player) -> Unit = {}
-)
+) {
+    public constructor(
+        /** The position of this button. */
+        position: GridPoint,
+        /** The drawable to use for this button. */
+        drawable: Drawable,
+        /** The increments to apply to the current page number based on the incoming click type. */
+        increments: Map<ClickType, Int>,
+        /** An optional additional click handler to run when this button is used. */
+        clickHandler: (Player) -> Unit = {}
+    ) : this(GridPositionGenerator { listOf(position) }, drawable, increments, clickHandler)
+}
