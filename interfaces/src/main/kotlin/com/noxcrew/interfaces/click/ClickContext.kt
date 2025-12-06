@@ -1,5 +1,7 @@
 package com.noxcrew.interfaces.click
 
+import com.noxcrew.interfaces.element.CompletedElement
+import com.noxcrew.interfaces.element.Element
 import com.noxcrew.interfaces.view.InterfaceView
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -15,5 +17,7 @@ public data class ClickContext(
     /** The hot bar slot pressed between 0-8 if [type] is [ClickType.NUMBER_KEY], or `-1` otherwise. */
     public val slot: Int,
     /** Whether the click was fired from an interact event (not from an open inventory). */
-    public val interact: Boolean
+    public val interact: Boolean,
+    /** The completed element clicked, if any. */
+    public val element: CompletedElement? = null,
 )

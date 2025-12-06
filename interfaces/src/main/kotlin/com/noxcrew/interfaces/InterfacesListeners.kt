@@ -742,7 +742,7 @@ public class InterfacesListeners private constructor(private val plugin: Plugin)
         view.isProcessingClick = true
 
         // Forward this click to all pre-processors
-        val clickContext = ClickContext(view.player, view, click, slot, interact)
+        val clickContext = ClickContext(view.player, view, click, slot, interact, raw)
 
         // Run the click handler and deal with its result
         val completedClickHandler = view.executeSync(
