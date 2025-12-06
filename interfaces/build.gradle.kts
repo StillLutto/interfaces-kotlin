@@ -19,8 +19,6 @@ dependencies {
     api(libs.caffeine)
 }
 
-val noxcrewRepository: String = "https://maven.noxcrew.com/public"
-
 java {
     withJavadocJar()
     withSourcesJar()
@@ -29,14 +27,11 @@ java {
 publishing {
     repositories {
         maven {
-            name = "noxcrew-public"
-            url = uri(noxcrewRepository)
-            credentials {
-                username = System.getenv("NOXCREW_MAVEN_PUBLIC_USERNAME")
-                password = System.getenv("NOXCREW_MAVEN_PUBLIC_PASSWORD")
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
+            name = "lutto-repo"
+            url = uri("https://repo.lutto.dev/lutto")
+            credentials(PasswordCredentials::class) {
+                username = System.getenv("MAVEN_NAME") ?: property("mavenUser").toString()
+                password = System.getenv("MAVEN_SECRET") ?: property("mavenPassword").toString()
             }
         }
     }
