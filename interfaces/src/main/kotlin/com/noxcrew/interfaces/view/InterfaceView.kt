@@ -77,7 +77,7 @@ public interface InterfaceView {
     public fun parent(): InterfaceView?
 
     /** Re-opens the [parent] view, or closes this menu if it has no parent. */
-    public suspend fun back()
+    public suspend fun back(reload: Boolean = false)
 
     /** Returns the current title of this view. */
     public fun title(): Component?

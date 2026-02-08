@@ -367,12 +367,12 @@ public abstract class AbstractInterfaceView<I : InterfacesInventory, T : Interfa
 
     override fun parent(): InterfaceView? = parent
 
-    override suspend fun back() {
+    override suspend fun back(reload: Boolean) {
         val parent = parent()
         if (parent == null) {
             close()
         } else {
-            parent.open(reload = false)
+            parent.open(reload = reload)
         }
     }
 
