@@ -23,6 +23,8 @@ public class ChestInterfaceView internal constructor(
 
     private val titleState = TitleState()
 
+    override fun title(): Component? = titleState.current
+
     override fun title(value: Component) {
         titleState.current = value
     }

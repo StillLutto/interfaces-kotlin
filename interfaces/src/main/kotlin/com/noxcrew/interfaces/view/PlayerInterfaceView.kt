@@ -3,23 +3,25 @@ package com.noxcrew.interfaces.view
 import com.noxcrew.interfaces.InterfacesListeners
 import com.noxcrew.interfaces.interfaces.PlayerInterface
 import com.noxcrew.interfaces.inventory.PlayerInterfacesInventory
+import com.noxcrew.interfaces.inventory.clearInventory
 import com.noxcrew.interfaces.pane.PlayerPane
 import kotlinx.coroutines.CoroutineScope
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryType
 import kotlin.time.Duration
 
 /** Implements a player interface view. */
 public class PlayerInterfaceView internal constructor(
     player: Player,
-    backing: PlayerInterface
+    backing: PlayerInterface,
 ) : AbstractInterfaceView<PlayerInterfacesInventory, PlayerInterface, PlayerPane>(
     player,
     backing,
-    null
+    null,
 ) {
+
+    override fun title(): Component = error("PlayerInventoryView's do not have a title")
 
     override fun title(value: Component) {
         error("PlayerInventoryView's cannot have a title")
@@ -45,24 +47,19 @@ public class PlayerInterfaceView internal constructor(
         InterfacesListeners.INSTANCE.setOpenView(player.uniqueId, this)
 
         // Clear the player's inventory!
-        player.inventory.clear()
-        if (player.openInventory.topInventory.type == InventoryType.CRAFTING ||
-            player.openInventory.topInventory.type == InventoryType.CREATIVE
-        ) {
-            player.openInventory.topInventory.clear()
-        }
-        player.openInventory.setCursor(null)
+        player.clearInventory()
 
         // Trigger onOpen manually because there is no real inventory being opened,
         // this will also re-draw the player inventory parts!
         onOpen()
-
-        // Work around a 1.21.5 Paper bug where off-hand and armor disappear on the client
-        // until an update is triggered on the client, after closing a menu.
-        player.updateInventory()
     }
 
     override fun close(coroutineScope: CoroutineScope, reason: InventoryCloseEvent.Reason, changingView: Boolean) {
+        // If the menu is currently open save its items!
+        if (isOpen() && builder.persistAddedItems) {
+            savePersistentItems(player.inventory)
+        }
+
         markClosed(coroutineScope, reason, changingView)
     }
 
