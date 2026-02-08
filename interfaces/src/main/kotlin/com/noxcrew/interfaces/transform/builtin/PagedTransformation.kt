@@ -27,7 +27,8 @@ public abstract class PagedTransformation<P : Pane>(
     protected val boundPage: BoundInteger = BoundInteger(0, 0, Integer.MAX_VALUE)
 
     /** The current page of the transform. */
-    protected var page: Int by boundPage
+    public var page: Int by boundPage
+        private set
 
     // Use the current page as the main state of the interface, persisting its state if pages are returned to!
     override val property: InterfaceProperty<Int> = boundPage
